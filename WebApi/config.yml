@@ -1,0 +1,27 @@
+﻿server:
+    http:
+        enable: true
+        host: 0.0.0.0
+        port: 8080
+
+    https:
+        enable: false
+        host: 0.0.0.0
+        port: 443
+        # pfx证书的路径
+        ssl-pfx: resources/cert/ssl-pfx.pfx
+        # 存放pfx证书密码的文本文件的路径
+        ssl-pwd: resources/cert/ssl-pwd.txt
+
+storage:
+    # 用于存储文件的根目录路径
+    root: storage
+
+security:
+    # 是否启用用户身份验证
+    enable: true
+    # path/to/users-file.yml
+    users-file: users.yml
+
+web-ui:
+    background-image: resources/img/app-bg.jpg
