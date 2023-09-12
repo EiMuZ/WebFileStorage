@@ -75,12 +75,12 @@ namespace WebApiStarter {
         private static void ConfigureServer(ServerConfig config, KestrelServerOptions options) {
             var http = config.Http;
             if (http.Enable) {
-                options.Listen(IPAddress.Parse(http.Host), http.Port);
+                options.Listen(IPAddress.Parse(http.IpAddress), http.Port);
             }
             var https = config.Https;
             if (https.Enable) {
                 var sslPwdContent = File.ReadAllText(https.SslPwd);
-                options.Listen(IPAddress.Parse(https.Host), https.Port, configure => {
+                options.Listen(IPAddress.Parse(https.IpAddress), https.Port, configure => {
                     configure.UseHttps(https.SslPfx, sslPwdContent);
                 });
             }

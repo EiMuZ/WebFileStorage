@@ -1,4 +1,5 @@
-﻿using YamlDotNet.Serialization;
+﻿using System.Reflection;
+using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace WebApi.Configuration {
@@ -56,17 +57,29 @@ namespace WebApi.Configuration {
         public Dictionary<string, string?> ToDictionary() {
 
             foreach (var prop in GetType().GetProperties()) {
-                var propInst = prop.GetValue(this);
-                if (propInst is DictableConfig inst) {
-                    foreach (var item in inst.ToDictionary()) {
-                        _configDict.Add($"{prop.Name}:{item.Key}", item.Value);
-                    }
-                } else {
-                    _configDict.Add(prop.Name, propInst?.ToString() ?? "");
-                }
+                var value = prop.GetValue(this);
+                ValueSetter(prop.Name, value);
             }
 
             return _configDict;
+        }
+
+        private void ValueSetter(string name, object? value) {
+            if (value is null) {
+                return;
+            }
+
+            if (value is DictableConfig dcInst) {
+                foreach (var item in dcInst.ToDictionary()) {
+                    _configDict.Add($"{name}:{item.Key}", item.Value);
+                }
+            } else if (value is System.Collections.IList listInst) {
+                for (int i = 0; i < listInst.Count; i++) {
+                    ValueSetter($"{name}:{i}", listInst[i]);
+                }
+            } else {
+                _configDict.Add(name, value?.ToString() ?? "");
+            }
         }
 
     }
@@ -90,19 +103,20 @@ namespace WebApi.Configuration {
     }
 
     public class ServerConfig : DictableConfig {
+        public List<string> Hosts { get; set; } = new();
         public HttpConfig Http { get; set; } = new();
         public HttpsConfig Https { get; set; } = new();
     }
 
     public class HttpConfig : DictableConfig {
         public bool Enable { get; set; } = true;
-        public string Host { get; set; } = "0.0.0.0";
+        public string IpAddress { get; set; } = "0.0.0.0";
         public int Port { get; set; } = 80;
     }
 
     public class HttpsConfig : DictableConfig {
         public bool Enable { get; set; } = false;
-        public string Host { get; set; } = "0.0.0.0";
+        public string IpAddress { get; set; } = "0.0.0.0";
         public int Port { get; set; } = 443;
         public string SslPfx { get; set; } = "";
         public string SslPwd { get; set; } = "";

@@ -19,13 +19,20 @@ namespace WebAppStarter {
                 Path.GetDirectoryName(Environment.ProcessPath) ?? AppDomain.CurrentDomain.BaseDirectory;
 
             var builder = WebApplication.CreateBuilder(args);
-            builder.Configuration.AddWFSConfiguration();
 
+            builder.Configuration.AddWFSConfiguration();
             var config = new AppConfig();
             builder.Configuration.Bind(config);
             builder.Services.AddSingleton<AppConfig>();
 
             builder.WebHost.UseKestrel(options => ConfigureServer(config.Server, options));
+            var hosts = config.Server.Hosts;
+            if (hosts.Count > 0) {
+                builder.Services.AddHostFiltering(config => {
+                    config.AllowedHosts = hosts;
+                });
+            }
+
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddControllers();
             builder.Services.AddSingleton<List<User>>();
@@ -77,12 +84,13 @@ namespace WebAppStarter {
         private static void ConfigureServer(ServerConfig config, KestrelServerOptions options) {
             var http = config.Http;
             if (http.Enable) {
-                options.Listen(IPAddress.Parse(http.Host), http.Port);
+                options.Listen(IPAddress.Parse(http.IpAddress), http.Port);
+
             }
             var https = config.Https;
             if (https.Enable) {
                 var sslPwdContent = File.ReadAllText(https.SslPwd);
-                options.Listen(IPAddress.Parse(https.Host), https.Port, configure => {
+                options.Listen(IPAddress.Parse(https.IpAddress), https.Port, configure => {
                     configure.UseHttps(https.SslPfx, sslPwdContent);
                 });
             }
