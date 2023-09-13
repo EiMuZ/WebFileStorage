@@ -71,7 +71,7 @@ namespace WebApi.Services {
 
         public async Task<AppResponse> GetDirectoryTree() {
             var dirTree = await Task.Run(() => GetNodeTree(_storageRoot));
-            return ResponseBuilder.Success.Build("", dirTree);
+            return ResponseBuilder.Success.Build(dirTree);
         }
 
         private static Dictionary<string, object> GetNodeTree(string nodePath) {
@@ -142,7 +142,7 @@ namespace WebApi.Services {
             return ResponseBuilder.Success.Build();
         }
 
-        public bool PathFilter(string path) {
+        private bool PathFilter(string path) {
             return !(path == _storageRoot || !path.StartsWith(_storageRoot));
         }
 

@@ -35,63 +35,39 @@ namespace WebApi.Dto {
     public static partial class ResponseBuilder {
 
         public static class Success {
-            public static AppResponse Build(string msg = "") {
-                return new AppResponse(0, msg);
-            }
-
-            public static AppResponse<T> Build<T>(string msg, T data) {
-                return new AppResponse<T>(0, msg, data);
-            }
+            public static AppResponse Build(string msg = "OK") => new(0, msg);
+            public static AppResponse<T> Build<T>(string msg, T data) => new(0, msg, data);
+            public static AppResponse<T> Build<T>(T data) => new(0, "OK", data);
         }
 
         public static class AuthenticationFailed {
-            public static AppResponse Build(string msg = "") {
-                return new AppResponse(10, msg);
-            }
-
-            public static AppResponse<T> Build<T>(string msg, T data) {
-                return new AppResponse<T>(10, msg, data);
-            }
+            public static AppResponse Build(string msg = "Authentication Failed") => new(10, msg);
+            public static AppResponse<T> Build<T>(string msg, T data) => new(10, msg, data);
+            public static AppResponse<T> Build<T>(T data) => new(0, "Authentication Failed", data);
         }
 
         public static class AuthorizationFailed {
-            public static AppResponse Build(string msg = "") {
-                return new AppResponse(20, msg);
-            }
-
-            public static AppResponse<T> Build<T>(string msg, T data) {
-                return new AppResponse<T>(20, msg, data);
-            }
+            public static AppResponse Build(string msg = "Authorization Failed") => new(20, msg);
+            public static AppResponse<T> Build<T>(string msg, T data) => new(20, msg, data);
+            public static AppResponse<T> Build<T>(T data) => new(0, "Authorization Failed", data);
         }
 
         public static class InvalidParameter {
-            public static AppResponse Build(string msg = "") {
-                return new AppResponse(30, msg);
-            }
-
-            public static AppResponse<T> Build<T>(string msg, T data) {
-                return new AppResponse<T>(30, msg, data);
-            }
+            public static AppResponse Build(string msg = "Invalid Parameter") => new(30, msg);
+            public static AppResponse<T> Build<T>(string msg, T data) => new(30, msg, data); 
+            public static AppResponse<T> Build<T>(T data) => new(0, "Invalid Parameter", data);
         }
 
         public static class FileOrDirectoryNotFound {
-            public static AppResponse Build(string msg = "") {
-                return new AppResponse(40, msg);
-            }
-
-            public static AppResponse<T> Build<T>(string msg, T data) {
-                return new AppResponse<T>(40, msg, data);
-            }
+            public static AppResponse Build(string msg = "File Or Directory Not Found") => new(40, msg);
+            public static AppResponse<T> Build<T>(string msg, T data) => new(40, msg, data);
+            public static AppResponse<T> Build<T>(T data) => new(40, "File Or Directory Not Found", data);
         }
 
         public static class InternalError {
-            public static AppResponse Build(string msg = "") {
-                return new AppResponse(3000, msg);
-            }
-
-            public static AppResponse<T> Build<T>(string msg, T data) {
-                return new AppResponse<T>(3000, msg, data);
-            }
+            public static AppResponse Build(string msg = "Internal Error") => new(3000, msg);
+            public static AppResponse<T> Build<T>(string msg, T data) => new(3000, msg, data);
+            public static AppResponse<T> Build<T>(T data) => new(3000, "Internal Error", data);
         }
 
     }

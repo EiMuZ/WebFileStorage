@@ -25,7 +25,7 @@ namespace WebApi.Services {
 
             var token = await _jwtHandler.Create(new Dictionary<string, object> { { "username", username } });
 
-            return ResponseBuilder.Success.Build("OK", new { token });
+            return ResponseBuilder.Success.Build(new { token });
         }
 
     }

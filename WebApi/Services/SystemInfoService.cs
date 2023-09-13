@@ -16,7 +16,7 @@ namespace WebApi.Services {
             var storageRoot = _appConfig.Storage.Root;
             var info = new DriveInfo(Path.GetFullPath(storageRoot));
 
-            return ResponseBuilder.Success.Build("OK", new DiskInfoDto {
+            return ResponseBuilder.Success.Build(new DiskInfoDto {
                 FreeSize = info.TotalFreeSpace,
                 TotalSize = info.TotalSize
             });
