@@ -32,6 +32,7 @@ namespace WebApiStarter {
             builder.Services.AddSingleton<IdentityService>();
             builder.Services.AddSingleton<JwtHandler>();
             builder.Services.AddScoped<WebUiSupportService>();
+            builder.Services.AddSingleton<SystemInfoService>();
 
             if (config.Security.Enable) {
                 builder.Services.AddAuthentication(ConfigureAuthenticationHandler<JwtAuthenticationHandler>);
