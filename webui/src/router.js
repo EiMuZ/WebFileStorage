@@ -1,8 +1,14 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import SignInView from "@/view/SignInView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
-    routes: []
+    routes: [
+        {
+            path: '/signin',
+            component: SignInView
+        }
+    ]
 })
 
 router.beforeEach((to, from, next)=>{
